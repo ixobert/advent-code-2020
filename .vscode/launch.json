@@ -10,7 +10,7 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "args": ["--input-file", "/Users/test/Documents/Projects/AdventCode/Day-6/input.txt"]
+            "args": ["--input-file", "/Users/test/Documents/Projects/AdventCode/Day-7/input.txt"]
         }
     ]
 }
