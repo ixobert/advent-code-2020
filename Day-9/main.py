@@ -6,7 +6,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--input-file', default='input.txt')
 
 
-def run(entries:List[str]) -> int: 
+def run(entries:List[str], preamble_size:int) -> int: 
     def helper(entries_:List[str], target:int) -> bool:
         for i, value in enumerate(entries_):
             if target - value in entries_:
@@ -15,10 +15,9 @@ def run(entries:List[str]) -> int:
         return False
     
     result = 0
-    k = 5
-    for i in range(k, len(entries)):
-        start = max(0, i - k)
-        end = start + k
+    for i in range(preamble_size, len(entries)):
+        start = max(0, i - preamble_size)
+        end = start + preamble_size
         check_pair = helper(entries_=entries[start:end], target=entries[i])
         if check_pair is False:
             result = entries[i]
@@ -26,7 +25,7 @@ def run(entries:List[str]) -> int:
     return result 
 
 
-def run2(entries:List[str]) -> int: 
+def run2(entries:List[str], preamble_size:int) -> int: 
     def helper(entries_:List[str], target:int) -> bool:
         for i, value in enumerate(entries_):
             if target - value in entries_:
@@ -34,24 +33,22 @@ def run2(entries:List[str]) -> int:
                     return True
         return False
     
-    def find_bad_number(entries:List[str]):
-        k = 25
-        for i in range(k, len(entries)):
-            start = max(0, i - k)
-            end = start + k
+    def find_bad_number(entries:List[str], preamble_size:int):
+        for i in range(preamble_size, len(entries)):
+            start = max(0, i - preamble_size)
+            end = start + preamble_size
             check_pair = helper(entries_=entries[start:end], target=entries[i])
             if check_pair is False:
                return entries[i]
         return result 
 
     result = 0
-    bad_number = find_bad_number(entries=entries)
+    bad_number = find_bad_number(entries=entries, preamble_size=preamble_size)
 
     for i in range(len(entries)):
         for j in range(i, len(entries)):
             current_sum = sum(entries[i:j])
             if current_sum == bad_number:
-                print(entries[i], entries[j-1], bad_number)
                 return entries[i] + entries[j-2]
     return result
   
@@ -61,7 +58,8 @@ def load_data(input_file):
     entries = []
     with open(input_file, mode='r') as fs:
         entries = [int(x) for x in fs.read().splitlines()]
-    return {'entries': entries}
+    preamble_size = 25
+    return {'entries': entries, 'preamble_size':preamble_size}
 
 if __name__ == "__main__":
     args = parser.parse_args()
